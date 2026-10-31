@@ -1,7 +1,6 @@
 flask==3.1.0
 gunicorn==23.0.0
 supabase==2.9.0
-python-3.11.9
 pandas==2.2.3
 sacrebleu==2.4.3
 bert-score==0.3.13
