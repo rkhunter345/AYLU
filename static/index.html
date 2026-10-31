@@ -1,0 +1,126 @@
+<!-- Ayllu · v3 · acceso con dos roles (docente / estudiante) -->
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ayllu · aula bilingüe: traducción de mensajes y materiales</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/css/ayllu.css">
+</head>
+<body>
+<div id="app" class="shell">
+
+  <!-- ============================ SIDEBAR ============================ -->
+  <aside id="sidebar" class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">A</span>
+      <div class="brand-text">
+        <strong>Ayllu</strong>
+        <small>hack4edu · reto 06</small>
+      </div>
+      <button id="collapse" class="icon-btn" title="Colapsar menú" aria-label="Colapsar menú">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <nav id="nav" class="nav"></nav>
+
+    <div class="side-foot">
+      <div class="side-health">
+        <span id="side-dot" class="dot dot-warn"></span>
+        <span id="side-mode">comprobando…</span>
+      </div>
+      <small class="muted">IA de repositorios abiertos · glosario activo</small>
+    </div>
+  </aside>
+
+  <!-- ============================= MAIN ============================== -->
+  <main class="main">
+    <header class="topbar">
+      <div class="crumbs">
+        <span class="crumb-root">Ayllu</span>
+        <span class="crumb-sep">/</span>
+        <strong id="crumb" class="crumb-current">Dashboard</strong>
+      </div>
+
+      <div class="top-actions">
+        <button id="help" class="btn btn-sm btn-help" type="button" title="Cómo usar Ayllu">
+          <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.4 9.2a2.6 2.6 0 015.1.7c0 1.8-2.5 2.1-2.5 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 17.4h.01" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+          <span class="btn-label">Ayuda</span>
+        </button>
+        <div class="search">
+          <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="global-search" type="search" placeholder="Buscar…" autocomplete="off">
+          <div id="search-panel" class="search-panel" hidden></div>
+        </div>
+        <span id="health-dot" class="dot dot-warn" title="/healthz"></span>
+        <time id="clock" class="clock">--:--:-- UTC</time>
+        <span id="who" class="who"></span>
+        <button id="logout" class="btn btn-sm" type="button" data-aula-logout title="Cerrar sesión">Salir</button>
+        <label class="lang-pick" title="Idioma de la interfaz">
+          <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 12h16M12 4c2.6 2.4 1.6 13.6 0 16M12 4c-2.6 2.4-1.6 13.6 0 16" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          <select data-lang-select aria-label="Idioma de la interfaz"></select>
+        </label>
+        <button id="bigtext" class="btn btn-sm" type="button" title="Texto más grande"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 18l4.2-12 4.2 12M4.6 14h5.2M14.4 18l3.3-9.5L21 18M15.8 15h4.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="btn-label">A+</span></button>
+        <button id="theme" class="btn btn-sm" title="Tema claro / oscuro" aria-label="Tema">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section id="view" class="view" aria-live="polite"></section>
+
+  </main>
+</div>
+
+<div id="modal" class="modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <header class="modal-head">
+      <h3 id="modal-title"></h3>
+      <button id="modal-close" class="icon-btn" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+    <div id="modal-body" class="modal-body"></div>
+    <footer id="modal-foot" class="modal-foot"></footer>
+  </div>
+</div>
+
+<div id="toasts" class="toasts"></div>
+
+<!-- ========================= v3 · ACCESO CON DOS ROLES ==================== -->
+<div id="login-overlay" class="login-shell">
+  <div class="login-card">
+    <div class="login-brand">
+      <span class="brand-mark">A</span>
+      <div class="brand-text">
+        <strong>Ayllu</strong>
+        <small>hack4edu · reto 06 · aula bilingüe</small>
+      </div>
+    </div>
+    <h2 class="login-title">Elige tu nombre para entrar</h2>
+    <p class="login-lead">Ayllu traduce los mensajes y los documentos entre el castellano y las lenguas originarias. Elige tu nombre en la lista: entras con un clic, sin recordar claves.</p>
+    <div id="login-roles" class="login-roles"><div class="empty">Cargando cuentas…</div></div>
+    <label class="lang-pick lang-pick-login" title="Idioma de la interfaz">
+      <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 12h16M12 4c2.6 2.4 1.6 13.6 0 16M12 4c-2.6 2.4-1.6 13.6 0 16" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      <span class="lang-pick-label">Idioma de la interfaz</span>
+      <select data-lang-select aria-label="Idioma de la interfaz"></select>
+    </label>
+    <form id="login-form" class="login-form" autocomplete="on">
+      <label class="field">Correo<input id="login-email" type="email" autocomplete="username" placeholder="docente@ayllu.pe"></label>
+      <label class="field">Clave<input id="login-password" type="password" autocomplete="current-password" placeholder="••••••••"></label>
+      <div class="row">
+        <button class="btn btn-primary" type="submit">Entrar</button>
+        <span id="login-error" class="login-error"></span>
+      </div>
+    </form>
+    <div class="alert alert-warn"><strong>Cuentas de demostración</strong>
+      <span>Las claves que se muestran son de demo y no protegen información real:
+      Ayllu es un prototipo de hackatón, no un servicio endurecido.</span></div>
+  </div>
+</div>
+
+<script src="/static/js/ayllu.js"></script>
+</body>
+</html>

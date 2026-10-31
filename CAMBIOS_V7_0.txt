@@ -1,0 +1,42 @@
+# Ayllu v7 · nueva logica para el docente + IA de repositorios abiertos
+
+## 1. Logica nueva (no es un cambio de colores)
+- PANEL DOCENTE (modulo nuevo, primera pantalla del docente): el dia completo
+  en una pantalla. Tareas con estado real guardado en la base de datos
+  (tabla nueva «tasks»), estadisticas de su clase, ultimas entregas y
+  siguiente paso sugerido. El boton «Marcar como hecho» persiste: al
+  recargar, la tarea sigue hecha.
+- INTELIGENCIA ARTIFICIAL (modulo nuevo): muestra los motores de IA de
+  repositorios abiertos verificados (existencia + licencia + lenguas),
+  deja traducir un texto en un clic (POST /api/translate-demo) y explica
+  por que salio ese resultado (POST /api/ai/explain): motor usado,
+  palabras tomadas del glosario validado y aviso de modo degradado.
+- El estudiante no ve estos modulos: el menu sigue filtrado por rol.
+
+## 2. IA de repositorios abiertos (verificados)
+- facebookresearch/fairseq (rama nllb) · NLLB-200 · codigo MIT, pesos
+  CC-BY-NC 4.0 · cubre aimara, guarani, quechua(quy) + 12 lenguas mas.
+- xhluca/dl-translate · MIT · 3 lineas para conectar NLLB real.
+- Helsinki-NLP/Opus-MT · modelos CC-BY 4.0 · respaldo lenguas internacionales.
+- argosopentech/argos-translate · MIT o CC0 · traduccion sin internet.
+- LibreTranslate/LibreTranslate · AGPL-3.0 · API REST con Docker.
+- AmericasNLP/americasnlp2024 · datos y baselines quechua/aimara/guarani.
+- Cadena de motores intacta y offline fallback (glosario validado 120 terminos)
+  si no hay internet ni motor: la app nunca se rompe y declara «glosa».
+
+## 3. Verificacion ejecutada
+- python -m py_compile (todo el backend) OK · node --check OK.
+- SELFTEST=1 python app.py -> 63/63 asserts OK, 21 lenguas.
+- Prueba real de la logica nueva: /healthz ok (11 tablas incluida tasks),
+  login docente, board con tareas y estadisticas, tarea marcada persistente
+  tras recargar, /api/ai/engines con los 6 motores, /api/translate-demo
+  traduciendo con lexicon (degraded declarado), /api/ai/explain con bullets
+  (motor, cobertura, palabras yaku=agua, mayu=rio), mensajeria completa
+  docente -> estudiante traducida (spa_Latn -> quy_Latn).
+
+## 4. Nuevos endpoints
+- GET  /api/teacher/board
+- POST /api/teacher/tasks/<id>/done
+- POST /api/translate-demo
+- GET  /api/ai/engines
+- POST /api/ai/explain

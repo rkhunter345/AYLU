@@ -1,0 +1,84 @@
+# Ayllu · v6.0 · mejoras de usabilidad para docentes y estudiantes sin experiencia técnica
+# Base: v5.0 (mensajería). No se retira ninguna función, ninguna lengua ni ningún endpoint.
+
+## 1. Por qué esta versión
+El usuario objetivo es un docente con pocos conocimientos técnicos y un estudiante
+con poca experiencia digital. La v5 era correcta en el fondo pero difícil en la
+forma: menú lateral estrecho con etiquetas técnicas, botones pequeños, paleta
+oscura y ningún sitio donde aprender a usarla. La v6 no cambia el motor de
+traducción: cambia cómo se llega a él.
+
+## 2. Colores claros (tema claro por defecto)
+- Nueva paleta por defecto: fondo #f7f9fc, paneles blancos, líneas #c6d6e8.
+- El tema oscuro deja de ser negro: pasa a un gris azulado suave (#22303f) con
+  texto #f2f6fb. Nunca se pierde legibilidad.
+- El tema se guarda en el navegador (`ayllu.theme`), así que el docente no tiene
+  que volver a elegirlo cada día.
+- Los paneles de traducción usan verde y azul claro en lugar de bloques oscuros.
+
+## 3. Botones grandes y fáciles de encontrar
+- Todos los botones miden 48 px de alto como mínimo (antes 8 px de padding),
+  con texto de 16 px y peso 600; los secundarios, 40 px.
+- Menú lateral más ancho (296 px) y cada opción es un botón de 54 px con icono
+  de 22 px y etiqueta grande.
+- Nueva franja de **acciones rápidas** en el Inicio: cuatro tarjetas grandes con
+  icono y nombre (Mensajes, Enviar a la clase / Mi clase, Traducir un texto,
+  Subir documento). Es imposible no verlas.
+- Foco visible con contorno de 3 px para quien navega con teclado.
+
+## 4. Etiquetas en lenguaje llano
+| Antes (v5) | Ahora (v6) |
+|---|---|
+| Dashboard | Inicio |
+| Mensajería | Mensajes |
+| Aula bilingüe | Mi clase |
+| Entrega y gestión | Enviar a la clase |
+| Adaptador cultural | Traducir un texto |
+| Escáner de documentos | Subir documento |
+| Mediciones | Progreso |
+| Analítica | Estadísticas |
+| Glosario | Palabras clave |
+| Admin / Audit | Revisión |
+
+También cambian los textos de apoyo: el Inicio explica para qué sirven los
+botones y el acceso dice «Elige tu nombre para entrar» en lugar de hablar de roles.
+
+## 5. Ayuda y accesibilidad dentro de la app
+- Botón **Ayuda** siempre visible en la barra superior: abre una guía de 5 pasos
+  escrita para los dos roles (qué hace Ayllu, en qué lengua escribir, que el
+  original nunca se borra, el botón Traducir y el botón A+).
+- Botón **A+** que agranda toda la letra un 15 % y recuerda la preferencia
+  (`ayllu.bigtext`).
+- Barra superior reorganizada para que nada se solape: en pantallas medianas se
+  ocultan el reloj y los chips de lengua, y en móvil se oculta el buscador.
+- Tipografía base de 16,5 px y cuerpos de texto de 15,5 px.
+
+## 6. Traducciones
+- Las 12 etiquetas nuevas del menú y las cadenas nuevas (Ayuda, Entendido,
+  Cómo usar Ayllu, Tema claro/oscuro, Texto más grande/normal, Buscar…,
+  Descargar lista (CSV), textos de la guía) existen en **inglés, portugués y
+  quechua**: 310 claves por archivo (antes 278).
+- `es.json` sigue vacío a propósito: el castellano es la lengua base escrita en
+  el código, tal como documenta la v4.
+- Comprobado por script: ninguna etiqueta del menú queda sin traducir en
+  en/pt/qu.
+
+## 7. Idiomas del producto (los del zip, sin cambios)
+21 lenguas en el catálogo: castellano; quechua ayacuchano, cusqueño, ancashino y
+quichua ecuatoriano; aimara; guaraní; náhuatl; maya yucateco; inglés; portugués;
+francés; alemán; italiano; ruso; árabe; chino mandarín; japonés; coreano; hindi;
+suajili. La interfaz se traduce a es / en / pt / qu.
+
+## 8. Repositorios de IA revisados (para conectar un motor real)
+Ver la tabla del README v6 y el mensaje de entrega. Todos son repositorios reales
+comprobados en esta entrega, con su licencia y el detalle de qué lenguas cubren
+de las 21 del catálogo.
+
+## 9. Verificación ejecutada en esta entrega
+- `node --check static/js/ayllu.js` → sin errores.
+- `python -m py_compile app.py core/*.py translator.py cultural_adapter.py evaluator.py` → sin errores.
+- `SELFTEST=1 python app.py` → **63/63 asserts OK**, 21 lenguas, claves de
+  adaptación intactas.
+- `/healthz` → `status: ok`, 10 tablas, 21 lenguas, 4 hilos y 6 mensajes sembrados.
+- Capturas reales con Chromium headless en escritorio (1440 px) y móvil (390 px),
+  incluida la interfaz en quechua; sin errores de consola.

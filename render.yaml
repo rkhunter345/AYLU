@@ -1,0 +1,32 @@
+# Ayllu · Render Web Service (plan Free)
+# Deploy: conecta el repositorio, Render detecta este archivo.
+# El plan Free duerme el servicio tras 15 min sin tráfico (cold start ~30 s).
+
+services:
+  - type: web
+    name: ayllu-hack4edu
+    runtime: python
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 60 --workers 2
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: AYLLU_SECRET
+        generateValue: true
+      - key: AYLLU_ADMIN_PASSWORD
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: NLLB_API_URL
+        sync: false
+      - key: LLM_API_URL
+        sync: false
+      - key: LLM_API_KEY
+        sync: false
